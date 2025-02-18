@@ -86,6 +86,21 @@ output = model.generate(
 generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
 print("Generated Text: ", generated_text)
 ```
+It's important to keep the `accelerate` library and the `transformers` library versions compatible to avoid any potential issues.
+
+To ensure everything is up-to-date, you can run the following command to upgrade `accelerate`:
+
+```bash
+pip install accelerate -U
+```
+
+This will upgrade `accelerate` to the latest version available. Additionally, you can upgrade `transformers` to match the latest compatible version:
+
+```bash
+pip install transformers -U
+```
+
+By running these commands, you ensure that both `accelerate` and `transformers` are up-to-date and compatible with each other. If you encounter any issues or need further assistance, feel free to ask!
 
 ### 7. Fine-Tune the Model (Optional)
 If you want to fine-tune the model on your own dataset, you can load a custom dataset and fine-tune it using the Trainer API. Here's a quick outline of how to fine-tune:
