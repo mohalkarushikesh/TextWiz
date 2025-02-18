@@ -102,9 +102,15 @@ tokenizer.pad_token = tokenizer.eos_token
 
 # Preprocess the dataset
 def preprocess_function(examples):
-    return tokenizer(examples["text"], truncation=True, padding="max_length", max_length=512)
+    inputs = tokenizer(examples["text"], truncation=True, padding="max_length", max_length=512)
+    inputs["labels"] = inputs["input_ids"].copy()  # Set labels to input_ids
+    return inputs
 
-tokenized_datasets = dataset.map(preprocess_function, batched=True, remove_columns=["text"])
+# Use a smaller subset of the dataset (first 100 samples)
+small_dataset = dataset["train"].select(range(100))
+
+# Tokenize the smaller dataset
+tokenized_datasets = small_dataset.map(preprocess_function, batched=True, remove_columns=["text"])
 
 # Load model
 model = GPT2LMHeadModel.from_pretrained("gpt2")
@@ -128,7 +134,7 @@ training_args = TrainingArguments(
 trainer = Trainer(
     model=model,                         # Pre-trained model
     args=training_args,                  # Training arguments
-    train_dataset=tokenized_datasets["train"],  # Preprocessed training dataset
+    train_dataset=tokenized_datasets,    # Preprocessed smaller training dataset
 )
 
 # Fine-tune the model
@@ -164,7 +170,7 @@ def generate_response(input_text):
     return generated_text
 
 while True:
-    user_input = input("You: ")
+    user_input = input("Vortex: ")
     if user_input.lower() == "quit":
         break
     response = generate_response(user_input)
