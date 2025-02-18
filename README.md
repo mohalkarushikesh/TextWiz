@@ -141,6 +141,12 @@ trainer = Trainer(
 trainer.train()
 ```
 
+`loss_type=None` was set in the config but it is unrecognised.Using the default loss: `ForCausalLMLoss`.
+
+The message indicates that the configuration contains an unrecognized `loss_type` value, and the model is defaulting to `ForCausalLMLoss`. This is a common loss function used for causal language modeling tasks, such as with GPT-2.
+
+Since `ForCausalLMLoss` is the appropriate loss function for this type of model, there's no action required unless you specifically want to use a different loss function. The default behavior is fine for most cases.
+
 ### 8. Save and Load the Fine-tuned Model
 After fine-tuning, you can save the model:
 ```python
@@ -152,13 +158,7 @@ To load the fine-tuned model later:
 model = GPT2LMHeadModel.from_pretrained("fine_tuned_model")
 tokenizer = GPT2Tokenizer.from_pretrained("fine_tuned_model")
 ```
-`loss_type=None` was set in the config but it is unrecognised.Using the default loss: `ForCausalLMLoss`.
 
-The message indicates that the configuration contains an unrecognized `loss_type` value, and the model is defaulting to `ForCausalLMLoss`. This is a common loss function used for causal language modeling tasks, such as with GPT-2.
-
-Since `ForCausalLMLoss` is the appropriate loss function for this type of model, there's no action required unless you specifically want to use a different loss function. The default behavior is fine for most cases.
-
-If you need any further assistance or have more questions, feel free to ask! I'm here to help.
 
 ### 9. Putting it All Together
 You can combine all these steps into a simple script that generates text based on user input. Here's an example of a basic loop that will keep generating responses based on user input:
