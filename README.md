@@ -69,14 +69,17 @@ inputs = tokenizer(input_text, return_tensors="pt")
 ### 6. Generate Output
 After tokenizing the input, you can generate output text from the model.
 ```python
-# Generate text
+# Generate text with sampling enabled
 output = model.generate(
-    inputs["input_ids"], 
+    inputs["input_ids"],
+    attention_mask=inputs["attention_mask"],
     max_length=50,  # You can adjust this to control the length of the output
     num_return_sequences=1,  # Number of output sequences you want
     no_repeat_ngram_size=2,  # This prevents repeating n-grams
     top_p=0.92,  # Top-p sampling for diversity
-    temperature=0.85  # Adjust the randomness of the output
+    temperature=0.85,  # Adjust the randomness of the output
+    do_sample=True,  # Enable sampling
+    pad_token_id=50256
 )
 
 # Decode output
@@ -87,13 +90,24 @@ print("Generated Text: ", generated_text)
 ### 7. Fine-Tune the Model (Optional)
 If you want to fine-tune the model on your own dataset, you can load a custom dataset and fine-tune it using the Trainer API. Here's a quick outline of how to fine-tune:
 ```python
-from transformers import Trainer, TrainingArguments
-
-# Assuming you have a dataset in the `datasets` library format
+from transformers import Trainer, TrainingArguments, GPT2Tokenizer, GPT2LMHeadModel
 from datasets import load_dataset
 
 # Load a dataset (this is just an example; replace it with your dataset)
 dataset = load_dataset("wikitext", "wikitext-103-raw-v1")
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+
+# Set pad_token to eos_token
+tokenizer.pad_token = tokenizer.eos_token
+
+# Preprocess the dataset
+def preprocess_function(examples):
+    return tokenizer(examples["text"], truncation=True, padding="max_length", max_length=512)
+
+tokenized_datasets = dataset.map(preprocess_function, batched=True, remove_columns=["text"])
+
+# Load model
+model = GPT2LMHeadModel.from_pretrained("gpt2")
 
 # Define training arguments
 training_args = TrainingArguments(
@@ -107,13 +121,14 @@ training_args = TrainingArguments(
     weight_decay=0.01,               # Strength of weight decay
     logging_dir="./logs",            # Directory for storing logs
     report_to="none",                # Disable reporting to third-party services like TensorBoard
+    remove_unused_columns=False,     # Prevent error for unmatched columns
 )
 
 # Initialize Trainer
 trainer = Trainer(
     model=model,                         # Pre-trained model
     args=training_args,                  # Training arguments
-    train_dataset=dataset["train"],      # Training dataset
+    train_dataset=tokenized_datasets["train"],  # Preprocessed training dataset
 )
 
 # Fine-tune the model
