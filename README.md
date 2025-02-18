@@ -15,8 +15,8 @@
 ### 1. Clone the Project
 First, clone the project repository:
 ```bash
-git clone <repository_url>
-cd <repository_directory>
+git clone https://github.com/mohalkarushikesh/TextWiz.git
+cd TextWiz
 ```
 
 ### 2. Create a Virtual Environment
