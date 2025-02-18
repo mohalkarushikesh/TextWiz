@@ -36,14 +36,12 @@ python -m venv venv
 ### 3. Install the Required Libraries
 Install the necessary packages:
 ```bash
-pip install transformers torch datasets  or python install -r requirements.txt
+pip install transformers torch datasets
 ```
-
-Transformers: A library by Hugging Face that provides pre-trained models for natural language processing tasks like text generation, translation, and sentiment analysis.
-
-Torch: Short for PyTorch, an open-source machine learning library used for building and training neural networks.
-
-Datasets: A library by Hugging Face that provides access to various datasets for training and evaluating machine learning models.
+or
+```bash
+pip install -r requirements.txt
+```
 
 ### 4. Load a Pre-trained Model
 We'll start by loading a pre-trained model like `GPT-2` using Hugging Face's Transformers library.
@@ -86,21 +84,6 @@ output = model.generate(
 generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
 print("Generated Text: ", generated_text)
 ```
-It's important to keep the `accelerate` library and the `transformers` library versions compatible to avoid any potential issues.
-
-To ensure everything is up-to-date, you can run the following command to upgrade `accelerate`:
-
-```bash
-pip install accelerate -U
-```
-
-This will upgrade `accelerate` to the latest version available. Additionally, you can upgrade `transformers` to match the latest compatible version:
-
-```bash
-pip install transformers -U
-```
-
-By running these commands, you ensure that both `accelerate` and `transformers` are up-to-date and compatible with each other. If you encounter any issues or need further assistance, feel free to ask!
 
 ### 7. Fine-Tune the Model (Optional)
 If you want to fine-tune the model on your own dataset, you can load a custom dataset and fine-tune it using the Trainer API. Here's a quick outline of how to fine-tune:
@@ -155,12 +138,7 @@ trainer = Trainer(
 # Fine-tune the model
 trainer.train()
 ```
-
-`loss_type=None` was set in the config but it is unrecognised.Using the default loss: `ForCausalLMLoss`.
-
-The message indicates that the configuration contains an unrecognized `loss_type` value, and the model is defaulting to `ForCausalLMLoss`. This is a common loss function used for causal language modeling tasks, such as with GPT-2.
-
-Since `ForCausalLMLoss` is the appropriate loss function for this type of model, there's no action required unless you specifically want to use a different loss function. The default behavior is fine for most cases.
+The message indicates that the configuration contains an unrecognized `loss_type` value, and the model is defaulting to `ForCausalLMLoss`. This is a common loss function used for causal language modeling tasks, such as with GPT-2. Since `ForCausalLMLoss` is the appropriate loss function for this type of model, there's no action required unless you specifically want to use a different loss function. The default behavior is fine for most cases.
 
 ### 8. Save and Load the Fine-tuned Model
 After fine-tuning, you can save the model:
@@ -174,19 +152,21 @@ model = GPT2LMHeadModel.from_pretrained("fine_tuned_model")
 tokenizer = GPT2Tokenizer.from_pretrained("fine_tuned_model")
 ```
 
-
 ### 9. Putting it All Together
 You can combine all these steps into a simple script that generates text based on user input. Here's an example of a basic loop that will keep generating responses based on user input:
 ```python
 def generate_response(input_text):
     inputs = tokenizer(input_text, return_tensors="pt")
     output = model.generate(
-        inputs["input_ids"], 
+        inputs["input_ids"],
+        attention_mask=inputs["attention_mask"],
         max_length=50,
         num_return_sequences=1,
         no_repeat_ngram_size=2,
         top_p=0.92,
-        temperature=0.85
+        temperature=0.85,
+        do_sample=True,  # Enable sampling
+        pad_token_id=50256
     )
     generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
     return generated_text
@@ -201,4 +181,4 @@ while True:
 
 ### Conclusion
 This is a very basic setup of a language model project using GPT-2. Depending on your requirements, you can adjust the parameters for generation, fine-tune the model on your data, or even deploy it in a web or chatbot application.
-
+```
