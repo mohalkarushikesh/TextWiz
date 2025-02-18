@@ -186,7 +186,7 @@ def generate_response(input_text):
     return generated_text
 
 while True:
-    user_input = input("Vortex: ")
+    user_input = input("You: ")
     if user_input.lower() == "quit":
         break
     response = generate_response(user_input)
