@@ -36,7 +36,7 @@ python -m venv venv
 ### 3. Install the Required Libraries
 Install the necessary packages:
 ```bash
-pip install transformers torch datasets
+pip install transformers torch datasets  or python install -r requirements.txt
 ```
 
 Transformers: A library by Hugging Face that provides pre-trained models for natural language processing tasks like text generation, translation, and sentiment analysis.
