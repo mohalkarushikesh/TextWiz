@@ -190,7 +190,7 @@ while True:
     if user_input.lower() == "quit":
         break
     response = generate_response(user_input)
-    print("Bot: ", response)
+    print("Vortex: ", response)
 ```
 
 ### Conclusion
