@@ -84,6 +84,16 @@ output = model.generate(
 generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
 print("Generated Text: ", generated_text)
 ```
+It's important to keep the `accelerate` library and the `transformers` library versions compatible to avoid any potential issues. 
+
+To ensure everything is up-to-date, you can run the following command to upgrade `accelerate`: 
+```bash pip install accelerate -U ``` 
+
+This will upgrade `accelerate` to the latest version available. Additionally, you can upgrade `transformers` to match the latest compatible version: 
+
+```bash pip install transformers -U ``` 
+
+By running these commands, you ensure that both `accelerate` and `transformers` are up-to-date and compatible with each other.
 
 ### 7. Fine-Tune the Model (Optional)
 If you want to fine-tune the model on your own dataset, you can load a custom dataset and fine-tune it using the Trainer API. Here's a quick outline of how to fine-tune:
@@ -138,7 +148,11 @@ trainer = Trainer(
 # Fine-tune the model
 trainer.train()
 ```
-The message indicates that the configuration contains an unrecognized `loss_type` value, and the model is defaulting to `ForCausalLMLoss`. This is a common loss function used for causal language modeling tasks, such as with GPT-2. Since `ForCausalLMLoss` is the appropriate loss function for this type of model, there's no action required unless you specifically want to use a different loss function. The default behavior is fine for most cases.
+`loss_type=None` was set in the config but it is unrecognised.Using the default loss: `ForCausalLMLoss`. The message indicates that the configuration contains an unrecognized 
+
+`loss_type` value, and the model is defaulting to `ForCausalLMLoss`. This is a common loss function used for causal language modeling tasks, such as with GPT-2. Since 
+
+`ForCausalLMLoss` is the appropriate loss function for this type of model, there's no action required unless you specifically want to use a different loss function. The default behavior is fine for most cases.
 
 ### 8. Save and Load the Fine-tuned Model
 After fine-tuning, you can save the model:
