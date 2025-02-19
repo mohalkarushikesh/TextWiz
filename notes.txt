@@ -1,0 +1,7 @@
+- **Transformers**: A type of neural network architecture used for natural language processing tasks, like text generation and translation.
+
+- **PyTorch**: An open-source deep learning library developed by Facebook. It's known for its ease of use and dynamic computational graphs.
+
+- **TensorFlow**: An open-source deep learning library developed by Google. It’s powerful and widely used for production-grade machine learning models.
+
+Both PyTorch and TensorFlow can be used to implement transformers, and the choice often depends on personal preference and project requirements.
