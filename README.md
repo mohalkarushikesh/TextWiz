@@ -1,8 +1,8 @@
-# TextWiz
+# TextWiz - Fine-tune tuned 
 
 ## Overview
 
-**TextWiz** is a simple Language Model (LLM) project built using the Hugging Face Transformers library. It leverages pre-trained models like GPT-2 for text generation, fine-tuning, and interaction. TextWiz enables you to generate contextually relevant text responses, fine-tune the model on your own dataset, and deploy it for various NLP applications.
+**TextWiz** is a simple Fine-tune the Language Model (LLM) project built using the Hugging Face Transformers library. It leverages pre-trained models like GPT-2 for text generation, fine-tuning, and interaction. TextWiz enables you to generate contextually relevant text responses, fine-tune the model on your own dataset, and deploy it for various NLP applications.
 
 ## Requirements
 
