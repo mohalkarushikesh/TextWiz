@@ -195,4 +195,3 @@ while True:
 
 ### Conclusion
 This is a very basic setup of a language model project using GPT-2. Depending on your requirements, you can adjust the parameters for generation, fine-tune the model on your data, or even deploy it in a web or chatbot application.
-```
