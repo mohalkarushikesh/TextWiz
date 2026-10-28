@@ -1,4 +1,4 @@
-# TextWiz - Fine-tune tuned LLM
+# TextWiz - Fine-tune tuned an GPT-2
 
 ## Overview
 
