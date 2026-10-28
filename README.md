@@ -38,10 +38,6 @@ Install the necessary packages:
 ```bash
 pip install transformers torch datasets
 ```
-or
-```bash
-pip install -r requirements.txt
-```
 
 ### 4. Load a Pre-trained Model
 We'll start by loading a pre-trained model like `GPT-2` using Hugging Face's Transformers library.
@@ -195,3 +191,38 @@ while True:
 
 ### Conclusion
 This is a very basic setup of a language model project using GPT-2. Depending on your requirements, you can adjust the parameters for generation, fine-tune the model on your data, or even deploy it in a web or chatbot application.
+
+
+
+-- V2
+
+Here's the script, `finetune_gpt2.py`. It uses Hugging Face `Trainer` for causal language modeling.
+
+**Setup**
+```bash
+pip install torch transformers datasets accelerate
+```
+
+**Run**
+```bash
+# On your own text file
+python finetune_gpt2.py --train_file data.txt --epochs 3
+
+# Larger model
+python finetune_gpt2.py --model gpt2-medium --train_file data.txt --batch_size 2
+```
+With no `--train_file`, it trains on wikitext-2 so you can test the pipeline.
+
+**Notes**
+- The script tokenizes your text, packs it into 512-token blocks, and holds out 10% for validation.
+- The fine-tuned model and tokenizer are saved to `./gpt2-finetuned`. It also prints a sample generation at the end.
+- Set `fp16=False` in `TrainingArguments` if you don't have an NVIDIA GPU, or use `bf16=True` on newer GPUs.
+- If you hit out-of-memory errors, lower `--batch_size` or `--block_size`.
+- For a specific format, such as instruction/response pairs, put each example on its own line in a consistent template (e.g. `### Question: ... ### Answer: ...`) so the model learns the pattern.
+
+To load it later:
+```python
+from transformers import pipeline
+gen = pipeline("text-generation", model="./gpt2-finetuned")
+print(gen("Your prompt", max_new_tokens=50)[0]["generated_text"])
+```
