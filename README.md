@@ -1,4 +1,4 @@
-# TextWiz - Fine-tune tuned 
+# TextWiz - Fine-tune tuned LLM
 
 ## Overview
 
